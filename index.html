@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo 4 · Ciudadano Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('Minecraft-Tenv2.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --bg: #0a0e1a;
+            --surface: #111827;
+            --surface-2: #1a2235;
+            --accent: #22d3ee;
+            --accent-dim: rgba(34, 211, 238, 0.15);
+            --accent-glow: rgba(34, 211, 238, 0.3);
+            --green: #34d399;
+            --green-dim: rgba(52, 211, 153, 0.15);
+            --orange: #fb923c;
+            --orange-dim: rgba(251, 146, 60, 0.15);
+            --red: #f87171;
+            --red-dim: rgba(248, 113, 113, 0.15);
+            --purple: #a78bfa;
+            --purple-dim: rgba(167, 139, 250, 0.15);
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
+            --border: rgba(255,255,255,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* === HERO === */
+        .hero {
+            position: relative;
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 3rem 1.5rem;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(34,211,238,0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(167,139,250,0.08) 0%, transparent 50%),
+                var(--bg);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+        }
+
+        .hero-badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            background: var(--accent-dim);
+            border: 1px solid rgba(34,211,238,0.25);
+            padding: 0.4rem 1.2rem;
+            border-radius: 100px;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: 'Minecraft', 'Outfit', sans-serif;
+            font-size: clamp(2.2rem, 6vw, 3.8rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-dim);
+            max-width: 560px;
+            position: relative;
+        }
+
+        /* === MAIN CONTENT === */
+        .content {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        /* === SECTION === */
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .section-icon.cyan { background: var(--accent-dim); border: 1px solid rgba(34,211,238,0.2); }
+        .section-icon.green { background: var(--green-dim); border: 1px solid rgba(52,211,153,0.2); }
+        .section-icon.orange { background: var(--orange-dim); border: 1px solid rgba(251,146,60,0.2); }
+        .section-icon.purple { background: var(--purple-dim); border: 1px solid rgba(167,139,250,0.2); }
+        .section-icon.red { background: var(--red-dim); border: 1px solid rgba(248,113,113,0.2); }
+
+        .section-header h2 {
+            font-family: 'Minecraft', 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        /* === CARDS === */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .card:hover {
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+        }
+
+        .card p, .card li {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card ul li {
+            padding: 0.35rem 0;
+            padding-left: 1.4rem;
+            position: relative;
+        }
+
+        .card ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* === COMPARISON TABLE === */
+        .compare-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--surface);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+
+        .compare-table th {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            background: var(--surface-2);
+            padding: 1rem 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .compare-table td {
+            padding: 0.85rem 1.2rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .compare-table tr:last-child td { border-bottom: none; }
+
+        .compare-table td:first-child {
+            font-weight: 600;
+            color: var(--text);
+            width: 35%;
+        }
+
+        /* === STEPS === */
+        .steps {
+            counter-reset: step;
+        }
+
+        .step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .step-num {
+            counter-increment: step;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent-dim);
+            border: 1px solid rgba(34,211,238,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            flex-shrink: 0;
+            margin-top: 0.15rem;
+        }
+
+        .step-num::before { content: counter(step); }
+
+        .step-text h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .step-text p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* === ALERT BOX === */
+        .alert {
+            border-radius: 12px;
+            padding: 1.2rem 1.4rem;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.8rem;
+            align-items: flex-start;
+        }
+
+        .alert.warning {
+            background: var(--orange-dim);
+            border: 1px solid rgba(251,146,60,0.25);
+        }
+
+        .alert.danger {
+            background: var(--red-dim);
+            border: 1px solid rgba(248,113,113,0.25);
+        }
+
+        .alert.tip {
+            background: var(--green-dim);
+            border: 1px solid rgba(52,211,153,0.25);
+        }
+
+        .alert-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.1rem; }
+
+        .alert-content p {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .alert-content strong {
+            color: var(--text);
+        }
+
+        /* === FOOTER === */
+        .footer {
+            text-align: center;
+            padding: 2rem 1.5rem 3rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .footer .minecraft-tag {
+            display: inline-block;
+            font-family: 'Minecraft', 'Space Mono', monospace;
+            background: var(--green-dim);
+            border: 1px solid rgba(52,211,153,0.2);
+            color: var(--green);
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.8rem;
+        }
+
+        /* === NAV BETWEEN ZONES === */
+        .zone-nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-top: 2rem;
+        }
+
+        .zone-link {
+            display: block;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .zone-link:hover {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        .zone-link small {
+            display: block;
+            font-weight: 400;
+            color: var(--text-dim);
+            font-size: 0.78rem;
+            margin-top: 0.2rem;
+        }
+
+        /* === ANIMATIONS === */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-badge, .hero h1, .hero p, .section, .zone-nav {
+            animation: fadeUp 0.6s ease-out both;
+        }
+        .hero h1 { animation-delay: 0.1s; }
+        .hero p { animation-delay: 0.2s; }
+        .section:nth-child(1) { animation-delay: 0.3s; }
+        .section:nth-child(2) { animation-delay: 0.35s; }
+        .section:nth-child(3) { animation-delay: 0.4s; }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 600px) {
+            .zone-nav { grid-template-columns: 1fr; }
+            .compare-table { font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO -->
+    <header class="hero">
+        <div class="hero-badge">🏛️ Zona 1 · Oficina de Administración Digital</div>
+        <h1>Tu <span>identidad digital</span> oficial</h1>
+        <p>Certificado digital, firma electrónica y Cl@ve: todo lo que necesitas saber para identificarte en internet de forma oficial.</p>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+        <!-- SECTION 1: Niveles de identidad -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon cyan">🔑</div>
+                <h2>Los 3 niveles de identidad digital</h2>
+            </div>
+
+            <p style="color: var(--text-dim); margin-bottom: 1.2rem;">
+                No todas las formas de identificarte online tienen el mismo nivel de seguridad. Piensa en ello como una escalera: cada peldaño te da acceso a cosas más importantes.
+            </p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Nivel</th>
+                        <th>Qué es</th>
+                        <th>Para qué sirve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>🟢 Básico</td>
+                        <td>Usuario + contraseña</td>
+                        <td>Redes sociales, tiendas online, streaming…</td>
+                    </tr>
+                    <tr>
+                        <td>🟡 Intermedio</td>
+                        <td>Verificación en 2 pasos (2FA)</td>
+                        <td>Banca online, email, cuentas importantes</td>
+                    </tr>
+                    <tr>
+                        <td>🔴 Oficial</td>
+                        <td>Certificado digital / Cl@ve</td>
+                        <td>Trámites con Hacienda, Seguridad Social, firma de documentos legales</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert tip">
+                <span class="alert-icon">💡</span>
+                <div class="alert-content">
+                    <p><strong>¿Sabías que…?</strong> Con 16 años ya puedes sacarte tu propio certificado digital. Te servirá para pedir cita en el médico, consultar tus notas oficiales o, cuando cumplas 18, hacer la declaración de la renta.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Certificado vs. firma -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon purple">📜</div>
+                <h2>Certificado digital vs. firma electrónica</h2>
+            </div>
+
+            <p style="color: var(--text-dim); margin-bottom: 1.2rem;">
+                Son conceptos relacionados pero no son lo mismo. El certificado es tu "DNI digital"; la firma es lo que haces con él.
+            </p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Certificado digital</th>
+                        <th>Firma electrónica</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>¿Qué es?</td>
+                        <td>Un archivo que demuestra quién eres</td>
+                        <td>El acto de "firmar" un documento digitalmente</td>
+                    </tr>
+                    <tr>
+                        <td>Analogía</td>
+                        <td>Tu DNI físico</td>
+                        <td>Tu firma manuscrita</td>
+                    </tr>
+                    <tr>
+                        <td>¿Quién lo emite?</td>
+                        <td>La FNMT (Fábrica Nacional de Moneda y Timbre) u otros organismos</td>
+                        <td>Tú lo usas con tu certificado o con Cl@ve</td>
+                    </tr>
+                    <tr>
+                        <td>¿Caduca?</td>
+                        <td>Sí, cada 2-4 años hay que renovarlo</td>
+                        <td>Cada firma es un acto puntual</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert warning">
+                <span class="alert-icon">⚠️</span>
+                <div class="alert-content">
+                    <p><strong>No confundir con la firma de Adobe.</strong> Cuando firmas un PDF en Adobe Acrobat, eso NO es una firma electrónica oficial. Es como poner tu nombre en un papel: cualquiera podría hacerlo. La firma con certificado digital sí tiene validez legal, porque demuestra criptográficamente que eres tú.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Cómo sacarse el certificado -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon green">🪪</div>
+                <h2>Cómo sacarte el certificado digital</h2>
+            </div>
+
+            <div class="card">
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-num"></div>
+                        <div class="step-text">
+                            <h4>Solicítalo en la web de la FNMT</h4>
+                            <p>Entra en <strong>sede.fnmt.gob.es</strong> y pulsa "Obtener certificado". Necesitas tu DNI/NIE. Te darán un código de solicitud.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num"></div>
+                        <div class="step-text">
+                            <h4>Acredita tu identidad</h4>
+                            <p>Ve a una oficina de registro (Hacienda, Seguridad Social, ayuntamiento…) con tu DNI y el código. Solo es un momento: comprueban que eres tú y activan tu solicitud.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num"></div>
+                        <div class="step-text">
+                            <h4>Descarga e instala el certificado</h4>
+                            <p>Vuelve a la web de la FNMT, introduce tu código y descarga el archivo del certificado. Se instala automáticamente en tu navegador.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert danger">
+                <span class="alert-icon">🔒</span>
+                <div class="alert-content">
+                    <p><strong>¿Dónde se guarda?</strong> Tu certificado se almacena en el navegador del ordenador donde lo descargaste. No puedes usarlo desde otro ordenador a menos que lo exportes (con contraseña) y lo lleves en un USB o lo instales en el otro equipo. Nunca lo dejes sin protección en un ordenador compartido: es como dejar tu DNI encima de una mesa.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Cl@ve -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon orange">📱</div>
+                <h2>Cl@ve: la alternativa al certificado</h2>
+            </div>
+
+            <div class="card">
+                <h3>¿Qué es Cl@ve?</h3>
+                <p>Es un sistema del Gobierno de España que te permite identificarte en trámites online sin necesidad de tener un certificado digital instalado. Funciona con tu móvil.</p>
+                <ul style="margin-top: 0.8rem;">
+                    <li><strong>Cl@ve PIN:</strong> te manda un código temporal al móvil cada vez que haces un trámite. Como un código de verificación, pero oficial.</li>
+                    <li><strong>Cl@ve Permanente:</strong> usas una contraseña fija + un código SMS. Más cómodo para trámites frecuentes.</li>
+                </ul>
+            </div>
+
+            <div class="alert tip">
+                <span class="alert-icon">💡</span>
+                <div class="alert-content">
+                    <p><strong>En la práctica:</strong> Cl@ve es más fácil de usar en el día a día (solo necesitas el móvil), pero el certificado digital te permite hacer cosas que Cl@ve no puede, como firmar documentos. Lo ideal es tener los dos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: AutoFirma -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon red">✍️</div>
+                <h2>AutoFirma: la herramienta para firmar</h2>
+            </div>
+
+            <div class="card">
+                <h3>¿Qué es AutoFirma?</h3>
+                <p><strong>AutoFirma</strong> es un programa gratuito del Gobierno que te permite firmar documentos electrónicamente usando tu certificado digital. Es el equivalente oficial a firmar un papel con bolígrafo.</p>
+                <ul style="margin-top: 0.8rem;">
+                    <li>Se descarga gratis desde <strong>firmaelectronica.gob.es</strong></li>
+                    <li>Funciona en Windows, Mac y Linux</li>
+                    <li>Necesitas tener instalado tu certificado digital</li>
+                    <li>Los documentos firmados con AutoFirma tienen <strong>validez legal completa</strong></li>
+                </ul>
+            </div>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Firma en Adobe</th>
+                        <th>Firma con AutoFirma</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Validez legal</td>
+                        <td>❌ No tiene (es una imagen)</td>
+                        <td>✅ Plena validez legal</td>
+                    </tr>
+                    <tr>
+                        <td>¿Demuestra quién firmó?</td>
+                        <td>❌ Cualquiera puede poner tu nombre</td>
+                        <td>✅ Vinculada a tu certificado digital</td>
+                    </tr>
+                    <tr>
+                        <td>¿Se puede falsificar?</td>
+                        <td>Fácilmente</td>
+                        <td>Prácticamente imposible (criptografía)</td>
+                    </tr>
+                    <tr>
+                        <td>¿Cuándo usarla?</td>
+                        <td>Para cosas informales</td>
+                        <td>Trámites oficiales, contratos, solicitudes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- NAV ZONES -->
+        <nav class="zone-nav">
+            <a class="zone-link" href="#">
+                🏪 Zona 2: Mercado
+                <small>Comercio electrónico y fraudes</small>
+            </a>
+            <a class="zone-link" href="#">
+                🏛️ Zona 3: Plaza ciudadana
+                <small>Activismo y participación digital</small>
+            </a>
+        </nav>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="minecraft-tag">⛏️ Mundo 4 · Minecraft Education</div>
+        <p>Ciudadano Digital: tus derechos y deberes online</p>
+        <p style="margin-top: 0.3rem;">Digitalización · 4º ESO · Curso 2025-2026</p>
+    </footer>
+
+</body>
+</html>

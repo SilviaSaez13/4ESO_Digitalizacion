@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Píldoras Digitales · Digitalización 4º ESO</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>⛏ Píldoras Digitales</h1>
+      <p>Digitalización · 4º ESO · 2025–2026</p>
+    </div>
+    <div class="sidebar-scroll" id="sidebar"></div>
+  </aside>
+
+  <main class="content-area" id="content">
+    <div class="placeholder">
+      <div class="placeholder-icon">⛏</div>
+      <div class="placeholder-text">Selecciona un tema del índice</div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+const bloques = [
+  {
+    id: 'A', letra: 'A', lc: 'la', bc: 'bc-a', ac: 'active-a', tc: 'tema-a', icon: '🗝️',
+    titulo: 'Identificación y Firma online',
+    desc: 'Contraseñas · Verificación · Cl@ve · Firma',
+    grupos: [
+      { titulo: 'Identificación cotidiana', temas: [
+        { cod: 'A1', nombre: 'Cómo crear contraseñas que nadie pueda adivinar' },
+        { cod: 'A2', nombre: 'La doble verificación: una capa más de seguridad' },
+        { cod: 'A3', nombre: 'Identificarte con el Estado: Cl@ve y certificado digital' },
+        { cod: 'A4', nombre: 'Gestores de contraseñas: para no tener que recordarlas todas' },
+      ]},
+      { titulo: 'Firma y trámites oficiales', temas: [
+        { cod: 'A5', nombre: 'Firmar documentos online: qué es y cuándo se necesita' },
+        { cod: 'A6', nombre: 'Trámites con la administración y compras online seguras' },
+      ]}
+    ]
+  },
+  {
+    id: 'B', letra: 'B', lc: 'lb', bc: 'bc-b', ac: 'active-b', tc: 'tema-b', icon: '🛡️',
+    titulo: 'Tu huella, tu dispositivo y los fraudes',
+    desc: 'Huella · Dispositivo · Fraudes',
+    grupos: [
+      { titulo: 'Tu huella digital', temas: [
+        { cod: 'B1', nombre: 'Qué saben de ti en internet y cómo lo consiguen' },
+        { cod: 'B2', nombre: 'Cómo configurar tu privacidad en redes sociales' },
+      ]},
+      { titulo: 'Tu dispositivo', temas: [
+        { cod: 'B3', nombre: 'Cómo saber si tu móvil u ordenador está en peligro' },
+        { cod: 'B4', nombre: 'Qué hacer para mantenerlo protegido' },
+        { cod: 'B5', nombre: 'WiFi pública: cuándo sí y cuándo no' },
+      ]},
+      { titulo: 'Los fraudes', temas: [
+        { cod: 'B6', nombre: 'Te ha llegado algo sospechoso o alguien se ha hecho pasar por ti' },
+        { cod: 'B7', nombre: 'Me han engañado — ¿qué hago ahora?' },
+      ]}
+    ]
+  },
+  {
+    id: 'C', letra: 'C', lc: 'lc', bc: 'bc-c', ac: 'active-c', tc: 'tema-c', icon: '📖',
+    titulo: 'Lo que lees y ves online',
+    desc: 'Fake news · Burbujas · Deepfakes · Participación',
+    grupos: [
+      { titulo: 'Desinformación y participación', temas: [
+        { cod: 'C1', nombre: 'Cómo detectar una noticia falsa antes de compartirla' },
+        { cod: 'C2', nombre: 'Por qué solo te muestran lo que ya piensas (burbujas)' },
+        { cod: 'C3', nombre: 'Vídeos e imágenes que no son reales (deepfakes e IA)' },
+        { cod: 'C4', nombre: 'Cómo participar en la red con criterio y respeto' },
+      ]}
+    ]
+  },
+  {
+    id: 'D', letra: 'D', lc: 'ld', bc: 'bc-d', ac: 'active-d', tc: 'tema-d', icon: '❤️',
+    titulo: 'Tu relación con la tecnología',
+    desc: 'Salud · Ciberacoso · Relaciones online',
+    grupos: [
+      { titulo: 'Bienestar digital', temas: [
+        { cod: 'D1', nombre: 'El tiempo de pantalla: tu cabeza, tu cuerpo y el planeta' },
+        { cod: 'D2', nombre: 'Ciberacoso y relaciones online: reconocerlo, pararlo y tratarnos mejor' },
+        { cod: 'D3', nombre: 'Riesgos en relaciones online: grooming y sexting' },
+      ]}
+    ]
+  }
+];
+
+const contenidos = {
+  A1: {
+    titulo: 'Cómo crear contraseñas que nadie pueda adivinar',
+    html: `
+      <p>Una contraseña es la llave de tu vida digital. Si alguien la consigue, puede entrar en tu correo, tus redes sociales, tu banco o cualquier servicio que uses. Por eso importa hacerla bien desde el principio.</p>
+      <div class="ejemplo">
+        <div class="ejemplo-label">Ejemplo real</div>
+        <p>"123456" fue la contraseña más usada del mundo en 2024. Un programa automatizado la prueba en menos de un segundo. Si la usas, ya no tienes contraseña: tienes una puerta abierta.</p>
+      </div>
+      <p>Una buena contraseña tiene al menos 12 caracteres, mezcla letras mayúsculas y minúsculas, números y símbolos, y no contiene tu nombre ni tu fecha de nacimiento. Cuanto más larga y aleatoria, mejor.</p>
+      <div class="que-hacer">
+        <div class="que-hacer-label">✔ Qué hacer</div>
+        <ol>
+          <li>Usa una frase que solo tú conozcas y transfórmala: "MiGato$altaAlto3veces"</li>
+          <li>Usa una contraseña distinta para cada servicio importante</li>
+          <li>Nunca la compartas, ni con alguien de confianza</li>
+          <li>Si sospechas que alguien la sabe, cámbiala inmediatamente</li>
+        </ol>
+      </div>
+      <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/contrasenas-seguras" target="_blank">⛏ Más info en INCIBE →</a>
+    `
+  },
+  A2: {
+    titulo: 'La doble verificación: una capa más de seguridad',
+    html: `
+      <p>Imagina que tu contraseña es la llave de tu casa. La doble verificación (también llamada 2FA o verificación en dos pasos) es como añadir una segunda cerradura: aunque alguien consiga tu llave, sin la segunda no puede entrar.</p>
+      <div class="ejemplo">
+        <div class="ejemplo-label">Ejemplo real</div>
+        <p>Intentas entrar en tu cuenta de Instagram desde un dispositivo nuevo. Introduces tu contraseña correctamente, pero Instagram te manda un código de 6 dígitos al móvil. Sin ese código, no hay acceso. Si alguien roba tu contraseña pero no tiene tu móvil, no puede entrar.</p>
+      </div>
+      <p>Hay varias formas de recibir ese segundo factor: un SMS con un código, una app de autenticación (como Google Authenticator o Authy), o una notificación en otro dispositivo. La app es la opción más segura porque no depende de tu número de teléfono.</p>
+      <div class="que-hacer">
+        <div class="que-hacer-label">✔ Qué hacer</div>
+        <ol>
+          <li>Activa la verificación en dos pasos en tu correo, redes sociales y banco</li>
+          <li>Prefiere una app de autenticación antes que el SMS si puedes elegir</li>
+          <li>Guarda los códigos de recuperación en un lugar seguro (por si pierdes el móvil)</li>
+          <li>Si recibes un código que no has pedido tú, alguien está intentando entrar en tu cuenta — cambia la contraseña</li>
+        </ol>
+      </div>
+      <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/contrasenas-seguras" target="_blank">⛏ Más info en INCIBE →</a>
+    `
+  },
+  A3: {
+    titulo: 'Identificarte con el Estado: Cl@ve y certificado digital',
+    html: `
+      <p>Cuando quieres hacer un trámite oficial online — pedir una beca, consultar tus notas en el registro, acceder a la Seguridad Social — el Estado necesita saber que eres tú de verdad. Para eso existen dos sistemas: <strong>Cl@ve</strong> y el <strong>certificado digital</strong>.</p>
+      <div class="ejemplo">
+        <div class="ejemplo-label">¿Para qué lo necesitas a los 16 años?</div>
+        <p>Con 16 años ya puedes registrarte en Cl@ve. Te sirve para pedir cita médica oficial, consultar el historial académico, solicitar el DNI o, cuando cumplas 18, hacer la declaración de la renta o pedir el carnet de conducir online.</p>
+      </div>
+      <p><strong>Cl@ve</strong> es el sistema más sencillo: te identificas con tu DNI y un código que te llega al móvil, igual que el 2FA que ya conoces, pero para trámites del Gobierno. Hay dos versiones: Cl@ve PIN (código temporal cada vez) y Cl@ve Permanente (contraseña fija + SMS).</p>
+      <p><strong>El certificado digital</strong> es un archivo que se instala en tu navegador y que demuestra criptográficamente que eres tú — como un DNI digital que tu ordenador reconoce. Lo emite la FNMT (Fábrica Nacional de Moneda y Timbre) y permite hacer cosas que Cl@ve no puede, como firmar documentos con validez legal.</p>
+      <div class="que-hacer">
+        <div class="que-hacer-label">✔ Cómo conseguir Cl@ve</div>
+        <ol>
+          <li>Entra en <strong>clave.gob.es</strong> y pulsa "Registro"</li>
+          <li>Necesitas tu DNI o NIE y un número de móvil</li>
+          <li>Puedes registrarte online o en una oficina de la Seguridad Social o Hacienda</li>
+          <li>Una vez registrado, ya puedes usarlo en cualquier sede electrónica del Gobierno</li>
+        </ol>
+      </div>
+      <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/contrasenas-seguras" target="_blank">⛏ Más info en INCIBE →</a>
+    `
+  },
+  A4: {
+    titulo: 'Gestores de contraseñas: para no tener que recordarlas todas',
+    html: `
+      <p>Si tienes una contraseña distinta para cada servicio — como deberías — es imposible recordarlas todas. La solución no es usar siempre la misma, sino usar un <strong>gestor de contraseñas</strong>: una app que las guarda todas cifradas y las rellena automáticamente cuando las necesitas.</p>
+      <div class="ejemplo">
+        <div class="ejemplo-label">Cómo funciona</div>
+        <p>Solo necesitas recordar una contraseña maestra (la del gestor). El resto las genera él automáticamente — largas, aleatorias, imposibles de adivinar — y las guarda. Cuando entras en una web, el gestor las rellena solo.</p>
+      </div>
+      <p>Los más conocidos y fiables son <strong>Bitwarden</strong> (gratuito y de código abierto), <strong>1Password</strong> y <strong>KeePass</strong>. Los navegadores como Chrome o Firefox también tienen gestores integrados, aunque son menos seguros que una app dedicada.</p>
+      <div class="que-hacer">
+        <div class="que-hacer-label">✔ Qué hacer</div>
+        <ol>
+          <li>Elige un gestor de confianza — Bitwarden es gratuito y muy recomendable</li>
+          <li>Crea una contraseña maestra larga y segura (esta sí tienes que recordarla)</li>
+          <li>Ve añadiendo tus cuentas poco a poco — no hace falta hacerlo todo de golpe</li>
+          <li>Activa también la verificación en dos pasos en el propio gestor</li>
+        </ol>
+      </div>
+      <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/contrasenas-seguras" target="_blank">⛏ Más info en INCIBE →</a>
+    `
+  },
+  A5: {
+    titulo: 'Firmar documentos online: qué es y cuándo se necesita',
+    html: `
+      <p>Firmar un documento online no es lo mismo que dibujar tu firma con el ratón o añadir una imagen de tu firma a un PDF. Eso no tiene ninguna validez legal — cualquiera podría hacerlo. La <strong>firma electrónica con certificado digital</strong> sí tiene validez legal porque demuestra criptográficamente que has sido tú, en ese momento, quien ha firmado.</p>
+      <div class="ejemplo">
+        <div class="ejemplo-label">La diferencia que importa</div>
+        <p>Firmar un PDF en Adobe Acrobat poniendo tu nombre o imagen es como escribir tu nombre en un papel — cualquiera podría escribirlo. Firmar con tu certificado digital usando AutoFirma es como firmar ante notario: hay una autoridad que certifica que eras tú.</p>
+      </div>
+      <p><strong>AutoFirma</strong> es el programa gratuito del Gobierno que te permite firmar documentos oficiales usando tu certificado digital. Se descarga desde <strong>firmaelectronica.gob.es</strong> y funciona en Windows, Mac y Linux. Los documentos firmados con AutoFirma tienen validez legal completa.</p>
+      <div class="que-hacer">
+        <div class="que-hacer-label">✔ Cuándo necesitas firma electrónica real</div>
+        <ol>
+          <li>Trámites con la administración (becas, solicitudes, registros oficiales)</li>
+          <li>Contratos con validez legal</li>
+          <li>Cualquier documento que te pidan "firmado digitalmente" de forma oficial</li>
+          <li>Para el día a día (redes sociales, compras) no hace falta — ahí sirve usuario y contraseña</li>
+        </ol>
+      </div>
+      <a class="incibe-link" href="https://firmaelectronica.gob.es" target="_blank">⛏ Descargar AutoFirma →</a>
+    `
+  },
+  A6: {
+    titulo: 'Trámites con la administración y compras online seguras',
+    html: `
+      <p>Con Cl@ve o certificado digital puedes hacer casi cualquier trámite oficial sin salir de casa: pedir el historial académico, solicitar becas, consultar multas, registrar documentos... Todo desde la <strong>sede electrónica</strong> del organismo correspondiente.</p>
+      <div class="ejemplo">
+        <div class="ejemplo-label">Trámites que ya puedes hacer con 16 años</div>
+        <p>Consultar tu historial clínico en el sistema de salud, pedir cita oficial, solicitar el DNI o renovarlo, acceder a tu expediente académico oficial, o registrar documentos en el Registro Civil.</p>
+      </div>
+      <p>En cuanto a las <strong>compras online</strong>, la clave es saber distinguir una tienda fiable de una trampa. Una tienda segura tiene HTTPS en la dirección (el candado), datos de contacto reales, política de devoluciones clara y métodos de pago conocidos. Si el precio es demasiado bueno para ser verdad, probablemente lo es.</p>
+      <div class="que-hacer">
+        <div class="que-hacer-label">✔ Antes de comprar online, comprueba</div>
+        <ol>
+          <li>Que la web tenga HTTPS (candado en la barra del navegador)</li>
+          <li>Que haya datos de contacto reales: dirección, teléfono, email</li>
+          <li>Que la política de devoluciones esté clara y sea razonable</li>
+          <li>Que el método de pago sea seguro: tarjeta con 3D Secure, PayPal o Bizum</li>
+          <li>Busca opiniones de la tienda en Google antes de pagar</li>
+        </ol>
+      </div>
+      <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/compras-online-seguras" target="_blank">⛏ Más info en INCIBE →</a>
+    `
+  }
+};
+
+// ── CONSTRUIR SIDEBAR ──
+const sidebar = document.getElementById('sidebar');
+const contentArea = document.getElementById('content');
+
+bloques.forEach(b => {
+  const bloqueDiv = document.createElement('div');
+  bloqueDiv.className = 'bloque';
+
+  const head = document.createElement('div');
+  head.className = 'bloque-head';
+  head.id = `head-${b.id}`;
+  head.innerHTML = `
+    <span class="letra ${b.lc}">${b.letra}</span>
+    <span class="bloque-icon">${b.icon}</span>
+    <div class="bloque-info">
+      <div class="bloque-titulo">${b.titulo}</div>
+      <div class="bloque-desc">${b.desc}</div>
+    </div>
+    <span class="bloque-arrow" id="arrow-${b.id}">▶</span>
+  `;
+
+  const temasDiv = document.createElement('div');
+  temasDiv.className = 'bloque-temas';
+  temasDiv.id = `temas-${b.id}`;
+
+  b.grupos.forEach(grupo => {
+    const sep = document.createElement('div');
+    sep.className = 'pag-sep';
+    sep.innerHTML = `<span class="pag-titulo">${grupo.titulo}</span>`;
+    temasDiv.appendChild(sep);
+
+    grupo.temas.forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = 'tema-btn';
+      btn.id = `btn-${t.cod}`;
+      btn.innerHTML = `<span class="tema-cod">${t.cod}</span><span class="tema-nombre-side">${t.nombre}</span>`;
+      btn.addEventListener('click', () => mostrarTema(t.cod, b));
+      temasDiv.appendChild(btn);
+    });
+  });
+
+  // Acordeón: cerrar todos al abrir uno
+  head.addEventListener('click', () => {
+    const yaAbierto = temasDiv.classList.contains('open');
+    document.querySelectorAll('.bloque-temas').forEach(t => t.classList.remove('open'));
+    document.querySelectorAll('.bloque-arrow').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.bloque-head').forEach(h => {
+      h.classList.remove('active-a','active-b','active-c','active-d');
+    });
+    if (!yaAbierto) {
+      temasDiv.classList.add('open');
+      document.getElementById(`arrow-${b.id}`).classList.add('open');
+      head.classList.add(b.ac);
+    }
+  });
+
+  bloqueDiv.appendChild(head);
+  bloqueDiv.appendChild(temasDiv);
+  sidebar.appendChild(bloqueDiv);
+});
+
+// ── MOSTRAR TEMA ──
+function mostrarTema(cod, bloque) {
+  // Limpiar activos
+  document.querySelectorAll('.tema-btn').forEach(b => {
+    b.classList.remove('active-a','active-b','active-c','active-d');
+  });
+  document.getElementById(`btn-${cod}`).classList.add(bloque.ac);
+
+  const data = contenidos[cod];
+  let nombreTema = '';
+  bloques.forEach(bl => bl.grupos.forEach(g => g.temas.forEach(t => {
+    if (t.cod === cod) nombreTema = t.nombre;
+  })));
+
+  if (data) {
+    contentArea.innerHTML = `
+      <div class="tema-content ${bloque.tc} active">
+        <div class="tema-breadcrumb">
+          <span class="breadcrumb-bloque ${bloque.bc}">${bloque.icon} ${bloque.id}</span>
+          <span>›</span>
+          <span>${bloque.titulo}</span>
+          <span>›</span>
+          <span>${cod}</span>
+        </div>
+        <div class="tema-header">
+          <h2>${cod} · ${data.titulo}</h2>
+          <div class="tema-url-badge">URL directa: silviasaez13.github.io/4ESO_Digitalizacion/#${cod}</div>
+        </div>
+        <div class="tema-body">${data.html}</div>
+      </div>
+    `;
+  } else {
+    contentArea.innerHTML = `
+      <div class="tema-content ${bloque.tc} active">
+        <div class="tema-breadcrumb">
+          <span class="breadcrumb-bloque ${bloque.bc}">${bloque.icon} ${bloque.id}</span>
+          <span>›</span>
+          <span>${bloque.titulo}</span>
+          <span>›</span>
+          <span>${cod}</span>
+        </div>
+        <div class="tema-header">
+          <h2>${cod} · ${nombreTema}</h2>
+          <div class="tema-url-badge">URL directa: silviasaez13.github.io/4ESO_Digitalizacion/#${cod}</div>
+        </div>
+        <div class="pendiente">
+          <div class="pendiente-icon">⛏</div>
+          <p>Contenido en construcción</p>
+        </div>
+      </div>
+    `;
+  }
+  history.pushState(null, '', `#${cod}`);
+}
+
+// ── HASH ROUTING ──
+window.addEventListener('load', () => {
+  const hash = window.location.hash.replace('#', '');
+  if (hash) {
+    bloques.forEach(b => {
+      b.grupos.forEach(g => {
+        g.temas.forEach(t => {
+          if (t.cod === hash) {
+            document.getElementById(`temas-${b.id}`).classList.add('open');
+            document.getElementById(`arrow-${b.id}`).classList.add('open');
+            document.getElementById(`head-${b.id}`).classList.add(b.ac);
+            mostrarTema(hash, b);
+          }
+        });
+      });
+    });
+  }
+});
+</script>
+</body>
+</html>

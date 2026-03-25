@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Píldoras Digitales · Digitalización 4º ESO</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>⛏ Píldoras Digitales</h1>
+      <p>Digitalización · 4º ESO · 2025–2026</p>
+    </div>
+    <div class="sidebar-scroll" id="sidebar"></div>
+  </aside>
+
+  <!-- ══ CONTENIDO ══ -->
+  <main class="content-area" id="content">
+    <div class="placeholder">
+      <div class="placeholder-icon">⛏</div>
+      <div class="placeholder-text">Selecciona un tema<br>del índice</div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+const bloques = [
+  {
+    id: 'A', letra: 'A', lc: 'la', icon: '🗝️',
+    titulo: 'Identificación y Firma online',
+    desc: 'Contraseñas · Verificación · Cl@ve · Firma',
+    paginas: [
+      {
+        num: 1, badge: 'pg1', titulo: 'Identificación cotidiana',
+        temas: [
+          { cod: 'A1', nombre: 'Cómo crear contraseñas que nadie pueda adivinar' },
+          { cod: 'A2', nombre: 'La doble verificación: una capa más de seguridad' },
+          { cod: 'A3', nombre: 'Identificarte con el Estado: Cl@ve y certificado digital' },
+          { cod: 'A4', nombre: 'Gestores de contraseñas: para no tener que recordarlas todas' },
+        ]
+      },
+      {
+        num: 2, badge: 'pg2', titulo: 'Firma y trámites oficiales',
+        temas: [
+          { cod: 'A5', nombre: 'Firmar documentos online: qué es y cuándo se necesita' },
+          { cod: 'A6', nombre: 'Trámites con la administración y compras online seguras' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 'B', letra: 'B', lc: 'lb', icon: '🛡️',
+    titulo: 'Tu huella, tu dispositivo y los fraudes',
+    desc: 'Huella · Dispositivo · Fraudes',
+    paginas: [
+      {
+        num: 1, badge: 'pg1', titulo: 'Tu huella digital',
+        temas: [
+          { cod: 'B1', nombre: 'Qué saben de ti en internet y cómo lo consiguen' },
+          { cod: 'B2', nombre: 'Cómo configurar tu privacidad en redes sociales' },
+        ]
+      },
+      {
+        num: 2, badge: 'pg2', titulo: 'Tu dispositivo',
+        temas: [
+          { cod: 'B3', nombre: 'Cómo saber si tu móvil u ordenador está en peligro' },
+          { cod: 'B4', nombre: 'Qué hacer para mantenerlo protegido' },
+          { cod: 'B5', nombre: 'WiFi pública: cuándo sí y cuándo no' },
+        ]
+      },
+      {
+        num: 3, badge: 'pg3', titulo: 'Los fraudes',
+        temas: [
+          { cod: 'B6', nombre: 'Te ha llegado algo sospechoso o alguien se ha hecho pasar por ti' },
+          { cod: 'B7', nombre: 'Me han engañado — ¿qué hago ahora?' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 'C', letra: 'C', lc: 'lc', icon: '📖',
+    titulo: 'Lo que lees y ves online',
+    desc: 'Fake news · Burbujas · Deepfakes · Participación',
+    paginas: [
+      {
+        num: 1, badge: 'pg1', titulo: 'Desinformación y participación',
+        temas: [
+          { cod: 'C1', nombre: 'Cómo detectar una noticia falsa antes de compartirla' },
+          { cod: 'C2', nombre: 'Por qué solo te muestran lo que ya piensas (burbujas)' },
+          { cod: 'C3', nombre: 'Vídeos e imágenes que no son reales (deepfakes e IA)' },
+          { cod: 'C4', nombre: 'Cómo participar en la red con criterio y respeto' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 'D', letra: 'D', lc: 'ld', icon: '❤️',
+    titulo: 'Tu relación con la tecnología',
+    desc: 'Salud · Ciberacoso · Relaciones online',
+    paginas: [
+      {
+        num: 1, badge: 'pg1', titulo: 'Bienestar digital',
+        temas: [
+          { cod: 'D1', nombre: 'El tiempo de pantalla: tu cabeza, tu cuerpo y el planeta' },
+          { cod: 'D2', nombre: 'Ciberacoso y relaciones online: reconocerlo, pararlo y tratarnos mejor' },
+          { cod: 'D3', nombre: 'Riesgos en relaciones online: grooming y sexting' },
+        ]
+      }
+    ]
+  }
+];
+
+const contenidos = {
+  A1: {
+    titulo: 'Cómo crear contraseñas que nadie pueda adivinar',
+    bloqueLabel: '🗝️ A · Identificación y Firma online',
+    url: '#A1',
+    html: `
+      <p>Una contraseña es la llave de tu vida digital. Si alguien la consigue, puede entrar en tu correo, tus redes sociales, tu banco o cualquier servicio que uses. Por eso importa hacerla bien desde el principio.</p>
+      <div class="ejemplo">
+        <div class="ejemplo-label">Ejemplo real</div>
+        <p>"123456" fue la contraseña más usada del mundo en 2024. Un programa automatizado la prueba en menos de un segundo. Si la usas, ya no tienes contraseña: tienes una puerta abierta.</p>
+      </div>
+      <p>Una buena contraseña tiene al menos 12 caracteres, mezcla letras mayúsculas y minúsculas, números y símbolos, y no contiene tu nombre ni tu fecha de nacimiento. Cuanto más larga y aleatoria, mejor.</p>
+      <div class="que-hacer">
+        <div class="que-hacer-label">✔ Qué hacer</div>
+        <ol>
+          <li>Usa una frase que solo tú conozcas y transfórmala: "MiGato$altaAlto3veces"</li>
+          <li>Usa una contraseña distinta para cada servicio importante</li>
+          <li>Nunca la compartas, ni con alguien de confianza</li>
+          <li>Si sospechas que alguien la sabe, cámbiala inmediatamente</li>
+        </ol>
+      </div>
+      <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/contrasenas-seguras" target="_blank">⛏ Más info en INCIBE →</a>
+    `
+  }
+};
+
+// ── CONSTRUIR SIDEBAR ──
+const sidebar = document.getElementById('sidebar');
+const contentArea = document.getElementById('content');
+
+bloques.forEach(b => {
+  const bloqueDiv = document.createElement('div');
+  bloqueDiv.className = 'bloque';
+
+  const head = document.createElement('div');
+  head.className = 'bloque-head';
+  head.innerHTML = `
+    <span class="letra ${b.lc}">${b.letra}</span>
+    <span class="bloque-icon">${b.icon}</span>
+    <div class="bloque-info">
+      <div class="bloque-titulo">${b.titulo}</div>
+      <div class="bloque-desc">${b.desc}</div>
+    </div>
+    <span class="bloque-arrow" id="arrow-${b.id}">▶</span>
+  `;
+
+  const temasDiv = document.createElement('div');
+  temasDiv.className = 'bloque-temas';
+  temasDiv.id = `temas-${b.id}`;
+
+  b.paginas.forEach(pag => {
+    const pagSep = document.createElement('div');
+    pagSep.className = 'pag-sep';
+    pagSep.innerHTML = `<span class="pag-badge ${pag.badge}">Pág. ${pag.num}</span><span class="pag-titulo">${pag.titulo}</span>`;
+    temasDiv.appendChild(pagSep);
+
+    pag.temas.forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = 'tema-btn';
+      btn.id = `btn-${t.cod}`;
+      btn.innerHTML = `<span class="tema-cod">${t.cod}</span><span class="tema-nombre-side">${t.nombre}</span>`;
+      btn.addEventListener('click', () => mostrarTema(t.cod, b));
+      temasDiv.appendChild(btn);
+    });
+  });
+
+  head.addEventListener('click', () => {
+    const open = temasDiv.classList.toggle('open');
+    document.getElementById(`arrow-${b.id}`).classList.toggle('open', open);
+    head.classList.toggle('active', open);
+  });
+
+  bloqueDiv.appendChild(head);
+  bloqueDiv.appendChild(temasDiv);
+  sidebar.appendChild(bloqueDiv);
+});
+
+// ── MOSTRAR TEMA ──
+function mostrarTema(cod, bloque) {
+  document.querySelectorAll('.tema-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`btn-${cod}`).classList.add('active');
+
+  const data = contenidos[cod];
+  let nombreTema = '';
+  bloques.forEach(bl => bl.paginas.forEach(p => p.temas.forEach(t => { if (t.cod === cod) nombreTema = t.nombre; })));
+
+  if (data) {
+    contentArea.innerHTML = `
+      <div class="tema-content active">
+        <div class="tema-breadcrumb">
+          <span class="breadcrumb-bloque ${bloque.lc}">${bloque.icon} ${bloque.id}</span>
+          <span>›</span><span>${bloque.titulo}</span>
+          <span>›</span><span>${cod}</span>
+        </div>
+        <div class="tema-header">
+          <h2>${cod} · ${data.titulo}</h2>
+          <div class="tema-url-badge">URL directa: pildoras.tudominio.com/${data.url}</div>
+        </div>
+        <div class="tema-body">${data.html}</div>
+      </div>
+    `;
+  } else {
+    contentArea.innerHTML = `
+      <div class="tema-content active">
+        <div class="tema-breadcrumb">
+          <span class="breadcrumb-bloque ${bloque.lc}">${bloque.icon} ${bloque.id}</span>
+          <span>›</span><span>${bloque.titulo}</span>
+          <span>›</span><span>${cod}</span>
+        </div>
+        <div class="tema-header">
+          <h2>${cod} · ${nombreTema}</h2>
+          <div class="tema-url-badge">URL directa: pildoras.tudominio.com/#${cod}</div>
+        </div>
+        <div class="pendiente">
+          <div class="pendiente-icon">⛏</div>
+          <p>Contenido en construcción</p>
+        </div>
+      </div>
+    `;
+  }
+  history.pushState(null, '', `#${cod}`);
+}
+
+// ── HASH ROUTING ──
+window.addEventListener('load', () => {
+  const hash = window.location.hash.replace('#', '');
+  if (hash) {
+    bloques.forEach(b => {
+      b.paginas.forEach(p => {
+        p.temas.forEach(t => {
+          if (t.cod === hash) {
+            document.getElementById(`temas-${b.id}`).classList.add('open');
+            document.getElementById(`arrow-${b.id}`).classList.add('open');
+            mostrarTema(hash, b);
+          }
+        });
+      });
+    });
+  }
+});
+</script>
+</body>
+</html>

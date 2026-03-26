@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Píldoras Digitales · Digitalización 4º ESO</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>⛏ Píldoras Digitales</h1>
+      <p>Digitalización · 4º ESO · 2025–2026</p>
+    </div>
+    <div class="sidebar-scroll" id="sidebar"></div>
+  </aside>
+  <main class="content-area" id="content">
+    <div class="placeholder">
+      <div class="placeholder-icon">⛏</div>
+      <div class="placeholder-text">Selecciona un tema del índice</div>
+    </div>
+  </main>
+</div>
+
+<script>
+const bloques = [
+  {
+    id:'A', letra:'A', lc:'la', bc:'bc-a', ac:'active-a', sc:'sep-a', tc:'tema-a', cc:'content-a', icon:'🗝️',
+    titulo:'Identificación y Firma online',
+    desc:'Contraseñas · Verificación · Cl@ve · Firma',
+    grupos:[
+      { titulo:'Identificación cotidiana', temas:[
+        { cod:'A1', nombre:'Cómo crear contraseñas que nadie pueda adivinar' },
+        { cod:'A2', nombre:'La doble verificación: una capa más de seguridad' },
+        { cod:'A3', nombre:'Identificarte con el Estado: Cl@ve y certificado digital' },
+        { cod:'A4', nombre:'Gestores de contraseñas: para no tener que recordarlas todas' },
+      ]},
+      { titulo:'Firma y trámites oficiales', temas:[
+        { cod:'A5', nombre:'Firmar documentos online: qué es y cuándo se necesita' },
+        { cod:'A6', nombre:'Trámites con la administración y compras online seguras' },
+      ]}
+    ]
+  },
+  {
+    id:'B', letra:'B', lc:'lb', bc:'bc-b', ac:'active-b', sc:'sep-b', tc:'tema-b', cc:'content-b', icon:'🛡️',
+    titulo:'Tu huella, tu dispositivo y los fraudes',
+    desc:'Huella · Dispositivo · Fraudes',
+    grupos:[
+      { titulo:'Tu huella digital', temas:[
+        { cod:'B1', nombre:'Qué saben de ti en internet y cómo lo consiguen' },
+        { cod:'B2', nombre:'Cómo configurar tu privacidad en redes sociales' },
+      ]},
+      { titulo:'Tu dispositivo', temas:[
+        { cod:'B3', nombre:'Cómo saber si tu móvil u ordenador está en peligro' },
+        { cod:'B4', nombre:'Qué hacer para mantenerlo protegido' },
+        { cod:'B5', nombre:'WiFi pública: cuándo sí y cuándo no' },
+      ]},
+      { titulo:'Los fraudes', temas:[
+        { cod:'B6', nombre:'Te ha llegado algo sospechoso o alguien se ha hecho pasar por ti' },
+        { cod:'B7', nombre:'Me han engañado — ¿qué hago ahora?' },
+      ]}
+    ]
+  },
+  {
+    id:'C', letra:'C', lc:'lc', bc:'bc-c', ac:'active-c', sc:'sep-c', tc:'tema-c', cc:'content-c', icon:'📖',
+    titulo:'Lo que lees y ves online',
+    desc:'Fake news · Burbujas · Deepfakes · Participación',
+    grupos:[
+      { titulo:'Desinformación y participación', temas:[
+        { cod:'C1', nombre:'Cómo detectar una noticia falsa antes de compartirla' },
+        { cod:'C2', nombre:'Por qué solo te muestran lo que ya piensas (burbujas)' },
+        { cod:'C3', nombre:'Vídeos e imágenes que no son reales (deepfakes e IA)' },
+        { cod:'C4', nombre:'Cómo participar en la red con criterio y respeto' },
+      ]}
+    ]
+  },
+  {
+    id:'D', letra:'D', lc:'ld', bc:'bc-d', ac:'active-d', sc:'sep-d', tc:'tema-d', cc:'content-d', icon:'❤️',
+    titulo:'Tu relación con la tecnología',
+    desc:'Salud · Ciberacoso · Relaciones online',
+    grupos:[
+      { titulo:'Bienestar digital', temas:[
+        { cod:'D1', nombre:'El tiempo de pantalla: tu cabeza, tu cuerpo y el planeta' },
+        { cod:'D2', nombre:'Ciberacoso y relaciones online: reconocerlo, pararlo y tratarnos mejor' },
+        { cod:'D3', nombre:'Riesgos en relaciones online: grooming y sexting' },
+      ]}
+    ]
+  }
+];
+
+const contenidos = {
+
+  A1: { titulo:'Cómo crear contraseñas que nadie pueda adivinar', html:`
+    <p>Una contraseña es la llave de tu vida digital. Si alguien la consigue, puede entrar en tu correo, tus redes sociales, tu banco o cualquier servicio que uses. Por eso importa hacerla bien desde el principio.</p>
+    <div class="ejemplo"><div class="ejemplo-label">Ejemplo real</div>
+    <p>"123456" fue la contraseña más usada del mundo en 2024. Un programa automatizado la prueba en menos de un segundo. Si la usas, ya no tienes contraseña: tienes una puerta abierta.</p></div>
+    <p>Una buena contraseña tiene al menos 12 caracteres, mezcla letras mayúsculas y minúsculas, números y símbolos, y no contiene tu nombre ni tu fecha de nacimiento.</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Qué hacer</div><ol>
+      <li>Usa una frase que solo tú conozcas y transfórmala: "MiGato$altaAlto3veces"</li>
+      <li>Usa una contraseña distinta para cada servicio importante</li>
+      <li>Nunca la compartas, ni con alguien de confianza</li>
+      <li>Si sospechas que alguien la sabe, cámbiala inmediatamente</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/contrasenas-seguras" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  A2: { titulo:'La doble verificación: una capa más de seguridad', html:`
+    <p>Imagina que tu contraseña es la llave de tu casa. La doble verificación (también llamada 2FA o verificación en dos pasos) es como añadir una segunda cerradura: aunque alguien consiga tu llave, sin la segunda no puede entrar.</p>
+    <div class="ejemplo"><div class="ejemplo-label">Ejemplo real</div>
+    <p>Intentas entrar en Instagram desde un dispositivo nuevo. Introduces tu contraseña correctamente, pero Instagram te manda un código de 6 dígitos al móvil. Sin ese código, no hay acceso. Si alguien roba tu contraseña pero no tiene tu móvil, no puede entrar.</p></div>
+    <p>Hay varias formas de recibir ese segundo factor: un SMS, una app de autenticación (como Google Authenticator o Authy) o una notificación en otro dispositivo. La app es la opción más segura porque no depende de tu número de teléfono.</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Qué hacer</div><ol>
+      <li>Activa la verificación en dos pasos en tu correo, redes sociales y banco</li>
+      <li>Prefiere una app de autenticación antes que el SMS si puedes elegir</li>
+      <li>Guarda los códigos de recuperación en un lugar seguro (por si pierdes el móvil)</li>
+      <li>Si recibes un código que no has pedido tú, alguien está intentando entrar — cambia la contraseña</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/contrasenas-seguras" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  A3: { titulo:'Identificarte con el Estado: Cl@ve y certificado digital', html:`
+    <p>Cuando quieres hacer un trámite oficial online — pedir una beca, consultar el historial académico, acceder a la Seguridad Social — el Estado necesita saber que eres tú de verdad. Para eso existen dos sistemas: <strong>Cl@ve</strong> y el <strong>certificado digital</strong>.</p>
+    <div class="ejemplo"><div class="ejemplo-label">¿Para qué lo necesitas a los 16 años?</div>
+    <p>Con 16 años ya puedes registrarte en Cl@ve. Te sirve para pedir cita médica oficial, consultar el historial académico, solicitar el DNI o, cuando cumplas 18, hacer la declaración de la renta o pedir el carnet de conducir online.</p></div>
+    <p><strong>Cl@ve</strong> es el sistema más sencillo: te identificas con tu DNI y un código que te llega al móvil. Hay dos versiones: Cl@ve PIN (código temporal cada vez) y Cl@ve Permanente (contraseña fija + SMS).</p>
+    <p><strong>El certificado digital</strong> es un archivo que se instala en tu navegador y demuestra criptográficamente que eres tú — como un DNI digital. Lo emite la FNMT (Fábrica Nacional de Moneda y Timbre) y permite hacer cosas que Cl@ve no puede, como firmar documentos con validez legal.</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Cómo conseguir Cl@ve</div><ol>
+      <li>Entra en <strong>clave.gob.es</strong> y pulsa "Registro"</li>
+      <li>Necesitas tu DNI o NIE y un número de móvil</li>
+      <li>Puedes registrarte online o en una oficina de la Seguridad Social o Hacienda</li>
+      <li>Una vez registrado, ya puedes usarlo en cualquier sede electrónica del Gobierno</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/contrasenas-seguras" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  A4: { titulo:'Gestores de contraseñas: para no tener que recordarlas todas', html:`
+    <p>Si tienes una contraseña distinta para cada servicio — como deberías — es imposible recordarlas todas. La solución es usar un <strong>gestor de contraseñas</strong>: una app que las guarda todas cifradas y las rellena automáticamente.</p>
+    <div class="ejemplo"><div class="ejemplo-label">Cómo funciona</div>
+    <p>Solo necesitas recordar una contraseña maestra (la del gestor). El resto las genera automáticamente — largas, aleatorias, imposibles de adivinar. Cuando entras en una web, el gestor las rellena solo.</p></div>
+    <p>Los más conocidos y fiables son <strong>Bitwarden</strong> (gratuito y de código abierto), <strong>1Password</strong> y <strong>KeePass</strong>. Los navegadores como Chrome o Firefox también tienen gestores integrados, aunque son menos seguros que una app dedicada.</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Qué hacer</div><ol>
+      <li>Elige un gestor de confianza — Bitwarden es gratuito y muy recomendable</li>
+      <li>Crea una contraseña maestra larga y segura (esta sí tienes que recordarla)</li>
+      <li>Ve añadiendo tus cuentas poco a poco</li>
+      <li>Activa también la verificación en dos pasos en el propio gestor</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/contrasenas-seguras" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  A5: { titulo:'Firmar documentos online: qué es y cuándo se necesita', html:`
+    <p>Firmar un documento online no es lo mismo que dibujar tu firma con el ratón o añadir una imagen a un PDF. Eso no tiene validez legal — cualquiera podría hacerlo. La <strong>firma electrónica con certificado digital</strong> sí tiene validez legal porque demuestra que has sido tú, en ese momento concreto, quien ha firmado.</p>
+    <div class="ejemplo"><div class="ejemplo-label">La diferencia que importa</div>
+    <p>Firmar un PDF en Adobe poniendo tu nombre es como escribir tu nombre en un papel — cualquiera podría escribirlo. Firmar con tu certificado digital usando AutoFirma es como firmar ante notario: hay una autoridad que certifica que eras tú.</p></div>
+    <p><strong>AutoFirma</strong> es el programa gratuito del Gobierno para firmar documentos oficiales con tu certificado digital. Se descarga desde <strong>firmaelectronica.gob.es</strong> y funciona en Windows, Mac y Linux.</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Cuándo necesitas firma electrónica real</div><ol>
+      <li>Trámites con la administración (becas, solicitudes, registros oficiales)</li>
+      <li>Contratos con validez legal</li>
+      <li>Cualquier documento que te pidan "firmado digitalmente" de forma oficial</li>
+      <li>Para el día a día (redes sociales, compras) no hace falta — ahí basta usuario y contraseña</li>
+    </ol></div>
+    <a class="incibe-link" href="https://firmaelectronica.gob.es" target="_blank">⛏ Descargar AutoFirma →</a>
+  `},
+
+  A6: { titulo:'Trámites con la administración y compras online seguras', html:`
+    <p>Con Cl@ve o certificado digital puedes hacer casi cualquier trámite oficial sin salir de casa: solicitar becas, pedir el historial académico, consultar multas, registrar documentos... Todo desde la <strong>sede electrónica</strong> del organismo correspondiente.</p>
+    <div class="ejemplo"><div class="ejemplo-label">Trámites que ya puedes hacer con 16 años</div>
+    <p>Consultar tu historial clínico, pedir cita oficial, solicitar o renovar el DNI, acceder al expediente académico oficial, o registrar documentos en el Registro Civil.</p></div>
+    <p>En cuanto a las <strong>compras online</strong>, que la web tenga HTTPS solo significa que la conexión va cifrada — hoy en día casi todas las webs lo tienen, incluidas las fraudulentas. Lo que realmente importa es otro tipo de señales.</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Antes de comprar, comprueba estas señales reales</div><ol>
+      <li>Busca reseñas y opiniones de otros compradores en Google o Trustpilot</li>
+      <li>Comprueba que haya aviso legal con datos reales de la empresa: nombre, dirección, CIF</li>
+      <li>Verifica que tenga política de devoluciones clara y razonable</li>
+      <li>Usa métodos de pago con protección al comprador: tarjeta con 3D Secure, PayPal o Bizum</li>
+      <li>Desconfía si el precio es llamativamente más bajo que en otras tiendas</li>
+      <li>Evita transferencias bancarias o pagos por Western Union — sin protección si te estafan</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/compras-seguras-online" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  B1: { titulo:'Qué saben de ti en internet y cómo lo consiguen', html:`
+    <p>Cada vez que usas internet dejas un rastro: qué buscas, qué compras, dónde estás, con quién hablas, qué te gusta. A eso se le llama <strong>huella digital</strong>. No siempre eres consciente de lo que dejas, pero otros sí lo son.</p>
+    <div class="ejemplo"><div class="ejemplo-label">Ejemplo real</div>
+    <p>Buscas unas zapatillas en Google. Al día siguiente ves anuncios de zapatillas en Instagram, YouTube y cualquier web que visites. No es casualidad: tu búsqueda fue registrada y vendida a anunciantes. Eso es solo la parte visible.</p></div>
+    <p>Tu huella digital incluye: lo que publicas tú voluntariamente (fotos, comentarios, información del perfil), lo que registran las apps y webs sin que lo veas (localización, hora, dispositivo, hábitos de uso) y lo que otros publican sobre ti (fotos en las que te etiquetan, menciones).</p>
+    <p>Esta información puede usarse para personalizar publicidad, pero también para construir un perfil muy detallado de ti que los ciberdelincuentes pueden aprovechar para engañarte de forma mucho más convincente.</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Qué puedes hacer</div><ol>
+      <li>Busca tu nombre en Google de vez en cuando para ver qué información hay sobre ti</li>
+      <li>Piensa antes de publicar: lo que subes puede quedarse para siempre</li>
+      <li>Revisa qué permisos tienen las apps que usas (ubicación, contactos, micrófono...)</li>
+      <li>Usa el modo incógnito cuando no quieras dejar rastro en un dispositivo compartido</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/privacidad" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  B2: { titulo:'Cómo configurar tu privacidad en redes sociales', html:`
+    <p>La configuración por defecto de las redes sociales suele ser la más expuesta. Cuando te creas una cuenta, Instagram, TikTok o X asumen que quieres que todo el mundo te vea. Cambiar eso toma cinco minutos y marca una diferencia enorme.</p>
+    <div class="ejemplo"><div class="ejemplo-label">Ejemplo real</div>
+    <p>Con el perfil público, cualquier persona — incluidos desconocidos, empresas o ciberdelincuentes — puede ver tus fotos, saber dónde vives, con quién estás, cuándo no estás en casa o qué rutinas tienes. Con el perfil privado, solo tus seguidores aprobados pueden verlo.</p></div>
+    <p>Más allá del perfil público o privado, hay otros ajustes importantes: quién puede enviarte mensajes, quién puede etiquetarte, si compartes tu ubicación, si permites que terceras apps accedan a tu cuenta, y qué datos recopila la plataforma sobre ti.</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Qué configurar ahora mismo</div><ol>
+      <li>Pon tu perfil en privado en Instagram y TikTok</li>
+      <li>Desactiva la ubicación en las publicaciones</li>
+      <li>Revisa qué apps tienen acceso a tu cuenta (Ajustes → Seguridad → Apps conectadas)</li>
+      <li>Activa la verificación en dos pasos en todas tus redes sociales</li>
+      <li>No aceptes solicitudes de seguimiento de personas que no conoces</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/privacidad" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  B3: { titulo:'Cómo saber si tu móvil u ordenador está en peligro', html:`
+    <p>Los programas maliciosos (malware) no siempre son visibles. Muchos están diseñados para pasar desapercibidos mientras roban datos, espían tu actividad o usan tu dispositivo para atacar a otros. Pero suelen dejar señales.</p>
+    <div class="ejemplo"><div class="ejemplo-label">Señales de alerta</div>
+    <p>El dispositivo va mucho más lento de lo normal, la batería se agota muy rápido sin razón aparente, aparecen apps que no has instalado, el móvil se calienta cuando no lo estás usando activamente, o ves cargos en tu tarjeta que no reconoces.</p></div>
+    <p>Los tipos de amenazas más comunes son los <strong>virus y malware</strong> (programas que dañan o toman control del dispositivo), el <strong>ransomware</strong> (cifra tus archivos y pide dinero para recuperarlos) y el <strong>spyware</strong> (espía tu actividad sin que lo sepas).</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Qué hacer si sospechas</div><ol>
+      <li>Pasa un antivirus actualizado (en móvil: Malwarebytes; en PC: Windows Defender ya está incluido)</li>
+      <li>Revisa las apps instaladas y desinstala las que no reconoces</li>
+      <li>Cambia las contraseñas desde otro dispositivo mientras resuelves el problema</li>
+      <li>Si el problema persiste, haz un restablecimiento de fábrica como último recurso</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/virus-amenazas" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  B4: { titulo:'Qué hacer para mantener tu dispositivo protegido', html:`
+    <p>Proteger tu dispositivo no requiere ser experto en tecnología. La mayoría de los ataques aprovechan descuidos básicos que se evitan con hábitos sencillos. La seguridad no es un estado, es una práctica continua.</p>
+    <div class="ejemplo"><div class="ejemplo-label">El error más común</div>
+    <p>Ignorar las actualizaciones del sistema. Cuando el móvil o el ordenador te avisa de una actualización disponible, muchas personas la posponen indefinidamente. Esas actualizaciones corrigen vulnerabilidades de seguridad conocidas que los atacantes explotan activamente.</p></div>
+    <p>Las herramientas básicas de protección son: <strong>antivirus</strong> (detecta y elimina malware), <strong>cortafuegos o firewall</strong> (controla qué programas se conectan a internet), <strong>actualizaciones del sistema</strong> (cierran agujeros de seguridad) y <strong>copias de seguridad o backup</strong> (te permiten recuperar todo si algo falla).</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Hábitos básicos de protección</div><ol>
+      <li>Instala las actualizaciones del sistema en cuanto estén disponibles</li>
+      <li>No descargues apps de fuera de las tiendas oficiales (App Store, Google Play)</li>
+      <li>No hagas clic en enlaces de mensajes o correos que no esperabas recibir</li>
+      <li>Haz copias de seguridad de tus fotos y documentos importantes (en la nube o en un disco externo)</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/virus-amenazas" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  B5: { titulo:'WiFi pública: cuándo sí y cuándo no', html:`
+    <p>Las redes WiFi públicas — de cafeterías, centros comerciales, aeropuertos, bibliotecas — son cómodas pero arriesgadas. Al conectarte a una red pública, otros usuarios en esa misma red podrían interceptar tu tráfico si no van cifrado.</p>
+    <div class="ejemplo"><div class="ejemplo-label">Ejemplo real</div>
+    <p>Te conectas al WiFi de un centro comercial para ver algo rápido. Alguien en esa misma red, con un programa sencillo de análisis de tráfico, puede ver qué webs visitas y, si alguna no usa HTTPS correctamente, capturar datos que envías.</p></div>
+    <p>El riesgo real no es usar WiFi pública para cualquier cosa, sino usarla para cosas sensibles: entrar en tu banco, comprar online, o acceder a cuentas con información importante. Para ver un vídeo o consultar el tiempo, el riesgo es mínimo.</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Reglas para WiFi pública</div><ol>
+      <li>Nunca accedas a tu banco ni hagas compras desde una red pública</li>
+      <li>Desactiva la conexión automática a redes WiFi conocidas</li>
+      <li>Si necesitas privacidad en redes públicas, usa una VPN</li>
+      <li>Cuando termines, cierra sesión en las cuentas que hayas abierto</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/virus-amenazas" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  B6: { titulo:'Te ha llegado algo sospechoso o alguien se ha hecho pasar por ti', html:`
+    <p>Cuando alguien te manda un mensaje haciéndose pasar por tu banco, por Correos, por la DGT o por cualquier empresa para robarte datos o dinero, eso se llama <strong>phishing</strong>. Si llega por SMS se llama <strong>smishing</strong>, y si es por llamada de teléfono, <strong>vishing</strong>. El nombre cambia, la táctica es la misma: crear urgencia o miedo para que actúes sin pensar.</p>
+    <div class="ejemplo"><div class="ejemplo-label">Situaciones reales</div>
+    <p>Recibes un SMS de "tu banco" diciendo que tu cuenta ha sido bloqueada y que pulses un enlace para verificarla. El enlace lleva a una web idéntica a la del banco pero falsa. O te llaman diciendo ser de Microsoft y que tu ordenador tiene un virus — te piden acceso remoto para "arreglarlo".</p></div>
+    <p>La suplantación de identidad también puede ir al revés: alguien roba tu cuenta de Instagram o WhatsApp y se hace pasar por ti para pedir dinero a tus contactos o difundir contenido en tu nombre.</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Cómo reaccionar</div><ol>
+      <li><strong>Para</strong> — no hagas clic, no respondas, no llames al número del mensaje</li>
+      <li><strong>Verifica</strong> — busca el número o la web oficialmente, no uses los datos del mensaje</li>
+      <li><strong>Consulta</strong> — pregunta a alguien de confianza si tienes dudas</li>
+      <li>Si han entrado en tu cuenta, cambia la contraseña y activa el doble factor inmediatamente</li>
+      <li>Puedes reportarlo al INCIBE en el <strong>017</strong> — es gratuito y confidencial</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/ingenieria-social-fraudes-online/phishing" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  B7: { titulo:'Me han engañado — ¿qué hago ahora?', html:`
+    <p>Si has caído en una estafa o fraude online, lo primero es no entrar en pánico. Hay pasos concretos que puedes dar para minimizar el daño. Cuanto antes actúes, mejor.</p>
+    <div class="ejemplo"><div class="ejemplo-label">Ejemplo real</div>
+    <p>Has pulsado un enlace sospechoso y has introducido tu contraseña del banco en una web falsa. O has pagado en una tienda online que resultó ser fraudulenta y el producto nunca llegó.</p></div>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Pasos a seguir según la situación</div><ol>
+      <li><strong>Si diste tus datos bancarios:</strong> llama a tu banco inmediatamente para bloquear la tarjeta o cuenta. El tiempo es crítico.</li>
+      <li><strong>Si diste tu contraseña:</strong> cámbiala ahora mismo en ese servicio y en cualquier otro donde uses la misma. Activa el doble factor.</li>
+      <li><strong>Si descargaste algo:</strong> pasa un antivirus completo antes de seguir usando el dispositivo.</li>
+      <li><strong>Guarda pruebas:</strong> capturas de pantalla, emails, mensajes — te harán falta si denuncias.</li>
+      <li><strong>Denuncia:</strong> en la Policía Nacional o Guardia Civil (presencialmente o en sus webs) y en el 017 de INCIBE.</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/ingenieria-social-fraudes-online" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  C1: { titulo:'Cómo detectar una noticia falsa antes de compartirla', html:`
+    <p>Las noticias falsas (también llamadas <strong>fake news</strong> o <strong>bulos</strong>) son informaciones falsas o manipuladas que se propagan por internet para engañar, desinformar o manipular a las personas. No siempre son completamente inventadas — a veces mezclan datos reales con mentiras para resultar más creíbles.</p>
+    <div class="ejemplo"><div class="ejemplo-label">Ejemplo real</div>
+    <p>Te llega un mensaje de WhatsApp que dice que el Gobierno va a cobrar por usar redes sociales a partir del mes que viene. Incluye un logo oficial y suena urgente. Miles de personas lo reenvían antes de comprobarlo. Era completamente falso.</p></div>
+    <p>Los bulos usan varias tácticas: titulares exagerados o alarmistas, imágenes sacadas de contexto, páginas web que imitan a medios reales cambiando solo alguna letra en la URL, o mensajes que piden que lo reenvíes a todos tus contactos cuanto antes.</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Antes de compartir, comprueba</div><ol>
+      <li>Verifica la fuente: ¿es un medio conocido y de confianza? ¿Hay otras fuentes que lo confirmen?</li>
+      <li>Lee la noticia completa, no solo el titular — los titulares sensacionalistas suelen no reflejar el contenido real</li>
+      <li>Busca la noticia en un verificador: Maldita.es, Newtral o Snopes son de confianza</li>
+      <li>Fíjate en la fecha — a veces se reciclan noticias antiguas como si fueran actuales</li>
+      <li>Si tienes dudas, no lo compartas — es mejor no difundir que contribuir a un bulo</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/bulos-fake-news" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  C2: { titulo:'Por qué solo te muestran lo que ya piensas (burbujas)', html:`
+    <p>Los algoritmos de las redes sociales, YouTube o Google están diseñados para mostrarte contenido que te gusta, que te engancha y que te hace quedarte más tiempo en la plataforma. El problema es que, sin darte cuenta, acabas viendo solo ideas, opiniones y noticias que confirman lo que ya piensas. A esto se le llama <strong>burbuja de filtro</strong> o <strong>cámara de eco</strong>.</p>
+    <div class="ejemplo"><div class="ejemplo-label">Ejemplo real</div>
+    <p>Dos personas buscan en YouTube "¿es buena la energía solar?" Según su historial, una recibe vídeos a favor y la otra en contra. Ambas creen que tienen razón porque "todo lo que ven" lo confirma. Pero en realidad, el algoritmo simplemente les está dando lo que ya querían escuchar.</p></div>
+    <p>Las burbujas de filtro tienen consecuencias reales: refuerzan ideas extremas, dificultan el debate entre personas con opiniones distintas y hacen que sea más fácil que los bulos se propaguen dentro de grupos que ya comparten esas creencias.</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Cómo salir de tu burbuja</div><ol>
+      <li>Busca activamente fuentes y opiniones distintas a las que sueles consumir</li>
+      <li>Sigue a personas o medios con perspectivas diferentes a las tuyas</li>
+      <li>Usa el modo incógnito para buscar sin que el algoritmo filtre los resultados</li>
+      <li>Desactiva las recomendaciones personalizadas en YouTube si quieres explorar sin filtros</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/bulos-fake-news" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  C3: { titulo:'Vídeos e imágenes que no son reales (deepfakes e IA)', html:`
+    <p>Un <strong>deepfake</strong> es un vídeo, audio o imagen generado o manipulado con inteligencia artificial para que parezca real. La tecnología ha avanzado tanto que cada vez es más difícil distinguirlos a simple vista. Se usan para difundir bulos, dañar la reputación de personas, crear contenido falso de famosos o fabricar pruebas inexistentes.</p>
+    <div class="ejemplo"><div class="ejemplo-label">Ejemplo real</div>
+    <p>Circula un vídeo de un político diciendo algo escandaloso que nunca dijo. O aparece una foto de un famoso en un lugar donde nunca estuvo. O alguien usa tu cara en un vídeo sin tu consentimiento. Todo generado por IA en minutos.</p></div>
+    <p>Para detectar un deepfake, fíjate en: movimientos de ojos poco naturales (los humanos parpadean cada 2-8 segundos), sombras o iluminación que no coinciden con el entorno, audio que no sincroniza bien con los labios, o bordes borrosos alrededor del pelo o la cara.</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Qué hacer</div><ol>
+      <li>Desconfía de vídeos con titulares muy alarmantes o que apelan mucho a las emociones</li>
+      <li>Busca la fuente original: ¿dónde apareció primero este vídeo o imagen?</li>
+      <li>Usa herramientas de detección como Illuminarty para analizar imágenes sospechosas</li>
+      <li>Haz búsqueda inversa de imágenes en Google para ver dónde más aparece</li>
+      <li>Antes de compartir, verifica siempre — un deepfake compartido masivamente puede destruir reputaciones</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/bulos-fake-news" target="_blank">⛏ Más info en INCIBE →</a>
+  `},
+
+  C4: { titulo:'Cómo participar en la red con criterio y respeto', html:`
+    <p>Internet es un espacio público. Lo que escribes, compartes o comentas tiene consecuencias reales para personas reales, igual que si lo dijeras en voz alta en la calle. La <strong>etiqueta digital</strong> es el conjunto de normas de comportamiento que hacen que la convivencia online sea posible y respetuosa.</p>
+    <div class="ejemplo"><div class="ejemplo-label">Ejemplo real</div>
+    <p>Comentar algo hiriente en una foto creyendo que "total, no me conoce" no lo hace menos dañino. Las palabras en internet duelen igual. Y además quedan. Una captura de pantalla puede volver años después.</p></div>
+    <p>Participar en la red con criterio también significa usar tu voz de forma responsable: compartir solo lo que has verificado, no difundir contenido que humille o dañe a otras personas, y saber que tienes derecho a expresarte pero también responsabilidad sobre lo que dices.</p>
+    <p>La libertad de expresión online tiene límites legales: el discurso de odio, las amenazas, el acoso y la difamación son delitos también en internet.</p>
+    <div class="que-hacer"><div class="que-hacer-label">✔ Buenas prácticas online</div><ol>
+      <li>Trata a las personas online como las tratarías en persona</li>
+      <li>No compartas contenido sin verificar, aunque te parezca interesante o gracioso</li>
+      <li>Si ves acoso o contenido dañino, usa los mecanismos de denuncia de la plataforma</li>
+      <li>Piensa antes de publicar: ¿te importaría que lo viera tu familia, tu profesor/a o tu futuro empleador?</li>
+    </ol></div>
+    <a class="incibe-link" href="https://www.incibe.es/ciudadania/tematicas/bulos-fake-news" target="_blank">⛏ Más info en INCIBE →</a>
+  `}
+
+};
+
+// ── CONSTRUIR SIDEBAR ──
+const sidebar = document.getElementById('sidebar');
+const contentArea = document.getElementById('content');
+
+bloques.forEach(b => {
+  const bloqueDiv = document.createElement('div');
+  bloqueDiv.className = 'bloque';
+
+  const head = document.createElement('div');
+  head.className = 'bloque-head';
+  head.id = `head-${b.id}`;
+  head.innerHTML = `
+    <span class="letra ${b.lc}">${b.letra}</span>
+    <span class="bloque-icon">${b.icon}</span>
+    <div class="bloque-info">
+      <div class="bloque-titulo">${b.titulo}</div>
+      <div class="bloque-desc">${b.desc}</div>
+    </div>
+    <span class="bloque-arrow" id="arrow-${b.id}">▶</span>
+  `;
+
+  const temasDiv = document.createElement('div');
+  temasDiv.className = 'bloque-temas';
+  temasDiv.id = `temas-${b.id}`;
+
+  b.grupos.forEach(grupo => {
+    const sep = document.createElement('div');
+    sep.className = `pag-sep ${b.sc}`;
+    sep.innerHTML = `<span class="pag-titulo">${grupo.titulo}</span>`;
+    temasDiv.appendChild(sep);
+
+    grupo.temas.forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = `tema-btn ${b.tc}`;
+      btn.id = `btn-${t.cod}`;
+      btn.innerHTML = `<span class="tema-cod">${t.cod}</span><span class="tema-nombre-side">${t.nombre}</span>`;
+      btn.addEventListener('click', () => mostrarTema(t.cod, b));
+      temasDiv.appendChild(btn);
+    });
+  });
+
+  head.addEventListener('click', () => {
+    const yaAbierto = temasDiv.classList.contains('open');
+    document.querySelectorAll('.bloque-temas').forEach(t => t.classList.remove('open'));
+    document.querySelectorAll('.bloque-arrow').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.bloque-head').forEach(h => {
+      h.classList.remove('active-a','active-b','active-c','active-d');
+    });
+    if (!yaAbierto) {
+      temasDiv.classList.add('open');
+      document.getElementById(`arrow-${b.id}`).classList.add('open');
+      head.classList.add(b.ac);
+    }
+  });
+
+  bloqueDiv.appendChild(head);
+  bloqueDiv.appendChild(temasDiv);
+  sidebar.appendChild(bloqueDiv);
+});
+
+// ── MOSTRAR TEMA ──
+function mostrarTema(cod, bloque) {
+  document.querySelectorAll('.tema-btn').forEach(b => {
+    b.classList.remove('active-a','active-b','active-c','active-d');
+  });
+  document.getElementById(`btn-${cod}`).classList.add(bloque.ac);
+
+  const data = contenidos[cod];
+  let nombreTema = '';
+  bloques.forEach(bl => bl.grupos.forEach(g => g.temas.forEach(t => {
+    if (t.cod === cod) nombreTema = t.nombre;
+  })));
+
+  if (data) {
+    contentArea.innerHTML = `
+      <div class="tema-content ${bloque.cc} active">
+        <div class="tema-breadcrumb">
+          <span class="breadcrumb-bloque ${bloque.bc}">${bloque.icon} ${bloque.id}</span>
+          <span>›</span><span>${bloque.titulo}</span><span>›</span><span>${cod}</span>
+        </div>
+        <div class="tema-header"><h2>${cod} · ${data.titulo}</h2>
+          <div class="tema-url-badge">URL: silviasaez13.github.io/4ESO_Digitalizacion/#${cod}</div>
+        </div>
+        <div class="tema-body">${data.html}</div>
+      </div>`;
+  } else {
+    contentArea.innerHTML = `
+      <div class="tema-content ${bloque.cc} active">
+        <div class="tema-breadcrumb">
+          <span class="breadcrumb-bloque ${bloque.bc}">${bloque.icon} ${bloque.id}</span>
+          <span>›</span><span>${bloque.titulo}</span><span>›</span><span>${cod}</span>
+        </div>
+        <div class="tema-header"><h2>${cod} · ${nombreTema}</h2>
+          <div class="tema-url-badge">URL: silviasaez13.github.io/4ESO_Digitalizacion/#${cod}</div>
+        </div>
+        <div class="pendiente"><div class="pendiente-icon">⛏</div><p>Contenido en construcción</p></div>
+      </div>`;
+  }
+  history.pushState(null, '', `#${cod}`);
+}
+
+// ── HASH ROUTING ──
+window.addEventListener('load', () => {
+  const hash = window.location.hash.replace('#', '');
+  if (hash) {
+    bloques.forEach(b => {
+      b.grupos.forEach(g => {
+        g.temas.forEach(t => {
+          if (t.cod === hash) {
+            document.getElementById(`temas-${b.id}`).classList.add('open');
+            document.getElementById(`arrow-${b.id}`).classList.add('open');
+            document.getElementById(`head-${b.id}`).classList.add(b.ac);
+            mostrarTema(hash, b);
+          }
+        });
+      });
+    });
+  }
+});
+</script>
+</body>
+</html>
